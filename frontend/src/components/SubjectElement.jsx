@@ -1,7 +1,8 @@
-
+import useSubjectStore  from "../app/subjectStore";
 
 const SubjectElement = ({ name }) => {
     const buttons = ['Unit1', 'Unit2', 'Unit3', 'Unit', 'Unit5']
+    
     return (
         <div className="">
             <div>
