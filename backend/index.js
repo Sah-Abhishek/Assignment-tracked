@@ -60,6 +60,8 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async(req, res)=> {
     try{
         const { username, password } = req.body;
+        console.log("username: ", username);
+        console.log("password: ", password);
 
         if(!username || !password)
             return res.status(400).json({ message: "Username and Password are required"});
@@ -67,12 +69,12 @@ app.post("/login", async(req, res)=> {
          const user = await User.findOne({username});
 
          if(!user)
-            return res.status(401).json({ message: "Invalid Username "});
+            return res.status(401).json({ message: "Invalid Username or Password "});
         
          // Check if the password matches the stored Password
 
          if(password != user.password)
-            return res.status(401).json({ message: "Invalid password"});
+            return res.status(401).json({ message: "Invalid Usernae or Password"});
         
          // Generate jwt token
 
@@ -87,6 +89,9 @@ app.post("/login", async(req, res)=> {
 
 
     }catch(error){
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
         console.log("Error while Signing up", error);
     }
 })
