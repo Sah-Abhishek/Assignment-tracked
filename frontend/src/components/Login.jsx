@@ -11,14 +11,20 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log("This is data", data);
+    // localStorage.clear();
+    // console.log("This is data", data);
     try {
       const response = await axios.post("http://localhost:3000/login", data);
+      console.log("This is the data that is sent back", data)
       const { token } = response.data;
-      if(data.rememberMe){
-        localStorage.setItem('Authtoken', token);
-      }
-      console.log(token);
+      localStorage.setItem('jwtToken', token);
+      // if(data.rememberMe){
+      //   localStorage.setItem('jwtToken', token);
+      // }
+      // else{
+      //   sessionStorage.setItem('jwtToken', token);
+      // }
+      console.log("This is token: ", token);
       console.log(response.data);
       navigate('/home');
     } catch (error) {

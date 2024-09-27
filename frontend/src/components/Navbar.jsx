@@ -3,54 +3,36 @@ import { useEffect, useRef, useState } from 'react';
 import useSubjectStore from '../app/subjectStore.js';
 import { CirclePlus } from 'lucide-react';
 
-
-
-
-
 const Navbar = () => {
     const [isInputVisible, setIsInputVisible] = useState(false);
     const inputRef = useRef(null);
-    // const buttonRef = useRef(null);
-
+    
+    const getToken = () => {
+        return localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+    }
+    const token = getToken();
     const handleLogout = () => {
         // Add logout functionality here
         console.log('Logout clicked');
     };
 
     const addSubject = useSubjectStore((state) => state.addSubject);
+    const sendData = useSubjectStore((state) => state.sendData);
     const [subjectTitle, setSubjectTitle] = useState("");
     // console.log("SubjectForm Rendered");
 
     const handleSubjectSubmit = () => {
+        const subjectId = Math.ceil(Math.random() * 1000000);
         if (!subjectTitle) return alert("Please add subject Title");
+        sendData({subject: subjectTitle, subjectId: subjectId}, token);
+        // console.log("Again Token from Navbar", token);
+        // console.log("token: ", token);
         addSubject({
-            id: Math.ceil(Math.random() * 1000000),
+            id: subjectId,
             title: subjectTitle
         })
         setSubjectTitle("");
     }
-
-
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (
-    //             isInputVisible &&
-    //             inputRef.current &&
-    //             !inputRef.current.contains(event.target) &&
-    //             buttonRef.current &&
-    //             !buttonRef.current.contains(event.target)
-    //         ) {
-    //             setIsInputVisible(false);
-    //         }
-    //     };
-
-    //     // Add event listener
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //         // Clean up event listener
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, [isInputVisible]);
 
     useEffect(() => {
         if (isInputVisible && inputRef.current) {
@@ -62,11 +44,6 @@ const Navbar = () => {
         <nav className="bg-gray-900 p-4">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="flex items-center">
-                    {/* <img
-            src="/api/placeholder/50/50"
-            alt="Logo"
-            className="h-8 w-8 mr-2"
-          /> */}
                     <span className="text-white text-2xl font-semibold">Assignment Tracker</span>
                 </div>
                 <div >
@@ -77,6 +54,7 @@ const Navbar = () => {
                                 <input 
                                 onKeyDown={(e) => {
                                     if(e.key === 'Enter'){
+                                        setIsInputVisible(!isInputVisible)
                                         handleSubjectSubmit();
                                     }
                                 }}
@@ -88,7 +66,7 @@ const Navbar = () => {
                                 
                                  onClick={() => {
                                     handleSubjectSubmit();
-                                }} className='text-gray-500 text-2xl font-semibold px-2'><CirclePlus strokeWidth={3} /></button>
+                                }} className='text-gray-500 text-2xl font-semibold px-2'><CirclePlus onClick={() => setIsInputVisible(!isInputVisible)} strokeWidth={3} /></button>
                             </div>
                         )
 

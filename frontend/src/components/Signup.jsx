@@ -1,6 +1,12 @@
+// Todo When the new user is logging in, the new user is still able to see the data of the old user, if he refresh the page then the data will be cleared but if he adds another subject the data will be stored in his local storage
+
+
+
+
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Link , useNavigate} from 'react-router-dom';
+import { useForm,  } from 'react-hook-form';
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 
@@ -10,16 +16,23 @@ const SignUpForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [usernameError, setUsernameError] = useState('');
   const username = watch("username");
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     console.log(data);
+    localStorage.clear();
+    console.log("Local Storage Cleared");
     // Handle form submission
     try{
         const response = await axios.post('http://localhost:3000/signup', data);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(isSubmitting);
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log("This is the token: ", response.data.token)
+        localStorage.setItem('jwtToken', response.data.token);
+        console.log("Navigate");
+        navigate('/home');
+        // console.log(isSubmitting);
         console.log(response.data);
-        console.log("register object", register);
+        // console.log("register object", register);
     }catch(error){
         console.log("Error while sending data", error);
         if(error.response && error.response.status === 409)
