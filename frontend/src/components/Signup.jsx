@@ -20,8 +20,8 @@ const SignUpForm = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    localStorage.clear();
-    console.log("Local Storage Cleared");
+    // localStorage.clear();
+    // console.log("Local Storage Cleared");
     // Handle form submission
     try{
         const response = await axios.post('http://localhost:3000/signup', data);

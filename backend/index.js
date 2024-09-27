@@ -37,7 +37,7 @@ app.post("/signup", async (req, res) => {
             return res.status(409).json({
                 message: "Username already exist"
         })
-        const token = jwt.sign({ id: username, password}, JWT_SECRET);
+        const token = jwt.sign({ username: username, password: password }, JWT_SECRET);
 
 
 

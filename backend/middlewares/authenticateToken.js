@@ -24,10 +24,12 @@ const authenticateToken = async(req, res, next) => {
         }
         req.user = user;
     })
-    const { id, password, iat } = req.user;
-    console.log("This is from the middleware", req.user, id, password );
-    const username = id;
-    console.log("This is ther username formerly id: ", username);
+    console.log(req.user);
+    const { username, password, iat } = req.user;
+    console.log("This is from the middleware", req.user, username, password );
+    // console.log("This is ther username formerly id: ", id);
+    // const username = id;
+
     try{
         const user = await User.findOne({ username});
         if(!user){

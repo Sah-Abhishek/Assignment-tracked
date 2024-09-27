@@ -28,6 +28,7 @@ const LoginForm = () => {
       console.log(response.data);
       navigate('/home');
     } catch (error) {
+      console.log("This is the data that is sent back fromt the catch block", data);
       if (error.response) {
         if (error.response.status === 401 || error.response.status == 400) {
           setLoginError(error.response.data.message);
