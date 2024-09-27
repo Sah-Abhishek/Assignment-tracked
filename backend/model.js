@@ -77,6 +77,8 @@ const Subject = mongoose.model('Subject', subjectSchema);
 
 const User = mongoose.model('User', userSchema);
 
+const Unit = mongoose.model('Unit', unitSchema);
+
 module.exports = {
     User,
     Subject
