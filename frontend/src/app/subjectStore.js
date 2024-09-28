@@ -11,6 +11,28 @@ const subjectStore = (set) => ({
             subjects: [subject, ...state.subjects],
         }))
     },
+    updateUnit: (subjectId, unitId, data) => {
+        set((state) => {
+            const subjects = state.subjects.map((subject) => {
+                if(subject.id === subjectId){
+                    return{
+                        ...subjects,
+                        units: subjects.units.map((unit) => 
+                            unit.id === unitId ? {...unit, ...data } : unit
+                        ),
+                    };
+                }
+                return subject;
+            });
+            return { subjects };
+        })
+        
+    },
+
+
+
+
+
     removeSubject: (subjectId) => {
         set((state) => ({
             subjects: state.subjects.filter((s) => s.id !== subjectId)
@@ -53,6 +75,7 @@ const subjectStore = (set) => ({
                     }
                 }
             )
+            console.log("The data is fethced from the subject store: ");
             set({ subjects: response.data.data, loading: false })
         }catch(error){
             set({ error: error.message, loading: false })

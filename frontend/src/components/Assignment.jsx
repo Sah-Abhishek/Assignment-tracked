@@ -6,17 +6,16 @@ import { useShallow } from 'zustand/react/shallow'
 import { useNavigate } from 'react-router-dom';
 
 const Assignment = () => {
-    const suubjects = [
-        'Database Management System',
-        'Design and Analysis of Algorithm',
-        'Internet of Things',
-        'Programming in Microcontrollers',
-        'Essence of Indian Ethics and knowledge'
-    ]
+    // const suubjects = [
+    //     'Database Management System',
+    //     'Design and Analysis of Algorithm',
+    //     'Internet of Things',
+    //     'Programming in Microcontrollers',
+    //     'Essence of Indian Ethics and knowledge'
+    // ]
     const token = localStorage.getItem('jwtToken');
     console.log(token);
     const navigate = useNavigate();
-    // console.log("loda");
     const { subjects, removeSubject, toggleSubjectStatus , fetchSubjects, error } = useSubjectStore(
         useShallow((state) => ({
             subjects: state.subjects,
@@ -27,7 +26,13 @@ const Assignment = () => {
         }))
         
     );
-    console.log(subjects);
+    console.log("This is from the assignment component", subjects);
+    useEffect(() => {
+        console.log("Fetched subjects:", subjects); // Log subjects after fetching
+        if (error) {
+            console.error("Error fetching subjects:", error);
+        }
+    }, [subjects, error]);
 
 
     useEffect(() => {
@@ -38,7 +43,7 @@ const Assignment = () => {
         }
         fetchSubjects(token);
 
-        console.log(subjects);
+        // console.log("These are the subjects from the Assignment Component", subjects);
         console.log(error);
     },[])
     
@@ -47,7 +52,8 @@ const Assignment = () => {
             <Navbar/>
             <div className='flex flex-col justify-center items-center pt-15'>
                 {subjects.map((subjects, index) => (
-                    <SubjectElement name={subjects.title} key={index}/>
+                    <SubjectElement name={subjects.title} key={subjects._id} unit={subjects.units} className=""/>
+                    
                 ))}
             </div>
         </div>
